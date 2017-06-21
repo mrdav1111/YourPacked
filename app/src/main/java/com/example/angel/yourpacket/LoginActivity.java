@@ -90,7 +90,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 if (user != null){
                     //usuario inicio sesion
                     finish();
-                    Intent intent = new Intent(LoginActivity.this,MainActivity.class);
+                    Intent intent = new Intent(LoginActivity.this,Main2Activity.class);
                     intent.putExtra("Usuario", user.getEmail());
                     //Log.i("i", user.getEmail());
                     LoginActivity.this.startActivity(intent);

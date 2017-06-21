@@ -15,4 +15,10 @@
     <string name="title_activity_main">MainActivity</string>
     <string name="sesion_iniciada">Ha iniciado sesion</string>
     <string name="auth_failed">Autenticacion fallo</string>
+    <string name="title_activity_main2">YourPacked</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
 </resources>
