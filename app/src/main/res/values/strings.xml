@@ -2,16 +2,15 @@
     <string name="app_name">YourPacked</string>
 
     <!-- Strings related to login -->
-    <string name="prompt_email">Email</string>
-    <string name="prompt_password">Contraseña (optional)</string>
-    <string name="action_sign_in">Sign in or register</string>
-    <string name="action_sign_in_short">Sign in</string>
-    <string name="error_invalid_email">This email address is invalid</string>
-    <string name="error_invalid_password">This password is too short</string>
-    <string name="error_incorrect_password">This password is incorrect</string>
-    <string name="error_field_required">This field is required</string>
-    <string name="permission_rationale">"Contacts permissions are needed for providing email
-        completions."
+    <string name="prompt_email">Correo Eletronico:</string>
+    <string name="prompt_password">Contraseña:</string>
+    <string name="action_sign_in">Inicia sesion o registrate</string>
+    <string name="action_sign_in_short">Inicia sesion</string>
+    <string name="error_invalid_email">Esta dirección de correo electrónico no es válida.</string>
+    <string name="error_invalid_password">Esta contraseña es demasiado corta</string>
+    <string name="error_incorrect_password">Esta contraseña es incorrecta</string>
+    <string name="error_field_required">Este campo es requerido</string>
+    <string name="permission_rationale">"Se necesitan permisos de contactos para proporcionar terminaciones de correo electrónico."
     </string>
     <string name="title_activity_main">MainActivity</string>
     <string name="sesion_iniciada">Ha iniciado sesion</string>
