@@ -8,4 +8,10 @@
     tools:context="com.example.angel.yourpacket.Main2Activity"
     tools:showIn="@layout/app_bar_main2">
 
+    <ListView
+        android:id="@+id/listaPaquetes"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        ></ListView>
+
 </android.support.constraint.ConstraintLayout>

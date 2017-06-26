@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -13,11 +14,24 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.ProviderQueryResult;
+
+import org.w3c.dom.Text;
+
+import java.util.ArrayList;
 
 public class Main2Activity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    TextView email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +57,39 @@ public class Main2Activity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+
+        View navheaderview = navigationView.getHeaderView(0);
+        TextView email = (TextView) navheaderview.findViewById(R.id.textEmailView);
+        email.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
+
+        final ListView paquete = (ListView) findViewById(R.id.listaPaquetes);
+
+        final ArrayList<Paquete> paquetes = new  ArrayList<Paquete>();
+
+
+        Paquete uno = new Paquete("YP00001");
+        Paquete dos = new Paquete("YP00002");
+        Paquete tres = new Paquete("YP00003");
+
+        paquetes.add(uno);
+        paquetes.add(dos);
+        paquetes.add(tres);
+
+        PaqueteAdapter adaptador = new PaqueteAdapter(this,paquetes);
+        paquete.setAdapter(adaptador);
+
+        paquete.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Paquete seleccionado = paquetes.get((int)id);
+                Intent detallePaquete = new Intent(Main2Activity.this,DetallePaquete.class);
+                detallePaquete.putExtra("paquete", seleccionado);
+                startActivity(detallePaquete);
+            }
+        });
+
+
     }
 
     @Override
@@ -59,6 +106,7 @@ public class Main2Activity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main2, menu);
+
         return true;
     }
 
@@ -69,6 +117,8 @@ public class Main2Activity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
+
+
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
@@ -76,6 +126,7 @@ public class Main2Activity extends AppCompatActivity
 
         return super.onOptionsItemSelected(item);
     }
+
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
