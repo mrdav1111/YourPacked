@@ -23,6 +23,10 @@ public class PaqueteAdapter extends BaseAdapter {
         paquetes = p;
     }
 
+    public void actualizar(){
+        this.notifyDataSetChanged();
+    }
+
     @Override
     public int getCount() {
         return paquetes.size();

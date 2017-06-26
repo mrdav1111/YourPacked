@@ -18,12 +18,14 @@ import static java.lang.System.out;
 public class Paquete implements Parcelable {
     String noGuia;
     ArrayList<String> estado = new ArrayList<>();
-    Date fecha;
+    String fecha;
+
+    public Paquete(){}
 
     public Paquete(String noGuia) {
         this.noGuia = noGuia;
         estado.add("Solicitud recibida");
-        fecha = Calendar.getInstance().getTime();
+        //fecha = Calendar.getInstance().getTime();
 
     }
 
@@ -70,8 +72,14 @@ public class Paquete implements Parcelable {
     public Paquete(Parcel in){
         this.noGuia = in.readString();
         this.estado = (ArrayList<String>) in.readSerializable();
-        this.fecha = (Date) in.readSerializable();
+        //this.fecha = (Date) in.readSerializable();
     }
 
-
+    @Override
+    public boolean equals(Object obj) {
+        Paquete comp = (Paquete) obj;
+        if (this.noGuia.equals((comp.getNoGuia())))
+            return true;
+        return false;
+    }
 }

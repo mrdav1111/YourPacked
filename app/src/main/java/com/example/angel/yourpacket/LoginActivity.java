@@ -93,6 +93,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     Intent intent = new Intent(LoginActivity.this,Main2Activity.class);
                     intent.putExtra("Usuario", user.getEmail());
                     //Log.i("i", user.getEmail());
+                    intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                     LoginActivity.this.startActivity(intent);
 
                 } else {

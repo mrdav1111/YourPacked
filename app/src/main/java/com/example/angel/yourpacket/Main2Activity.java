@@ -16,22 +16,34 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.ProviderQueryResult;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 public class Main2Activity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     TextView email;
+    PaqueteAdapter adaptador;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +71,7 @@ public class Main2Activity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
 
-        View navheaderview = navigationView.getHeaderView(0);
+      View navheaderview = navigationView.getHeaderView(0);
         TextView email = (TextView) navheaderview.findViewById(R.id.textEmailView);
         email.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
 
@@ -68,16 +80,119 @@ public class Main2Activity extends AppCompatActivity
         final ArrayList<Paquete> paquetes = new  ArrayList<Paquete>();
 
 
-        Paquete uno = new Paquete("YP00001");
-        Paquete dos = new Paquete("YP00002");
-        Paquete tres = new Paquete("YP00003");
 
-        paquetes.add(uno);
-        paquetes.add(dos);
-        paquetes.add(tres);
 
-        PaqueteAdapter adaptador = new PaqueteAdapter(this,paquetes);
+
+        DatabaseReference bd = FirebaseDatabase.getInstance()
+                .getReference()
+                .child("Usuarios")
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .child("paquetes");
+
+
+       for (Paquete p : paquetes){
+            bd.child(p.getNoGuia()).setValue(true);
+            bd.getParent().getParent().getParent().child("Paquetes").child(p.getNoGuia()).setValue(p);
+        }
+
+      bd.addListenerForSingleValueEvent(new ValueEventListener() {
+           @Override
+           public void onDataChange(DataSnapshot dataSnapshot) {
+               final Iterable<DataSnapshot> paquetes1 = dataSnapshot.getChildren();
+               DatabaseReference paqueteRaiz = FirebaseDatabase.getInstance().getReference().child("Paquetes");
+               for (DataSnapshot aBoolean : paquetes1) {
+
+                   if ((Boolean) aBoolean.getValue()){
+                       paqueteRaiz.child(aBoolean.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
+                           @Override
+                           public void onDataChange(DataSnapshot dataSnapshot) {
+                               Paquete paquete1 = dataSnapshot.getValue(Paquete.class);
+                               paquetes.add(paquete1);
+                               adaptador.notifyDataSetChanged();
+                           }
+
+                           @Override
+                           public void onCancelled(DatabaseError databaseError) {
+
+                           }
+                       });
+                   }
+
+               }
+
+           }
+
+           @Override
+           public void onCancelled(DatabaseError databaseError) {
+
+           }
+       });
+
+        bd.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Toast.makeText(getApplicationContext(),"Child added",Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                Toast.makeText(getApplicationContext(),dataSnapshot.getKey()+"1",Toast.LENGTH_SHORT).show();
+                DatabaseReference paqueteDatabaseReference = FirebaseDatabase.getInstance().getReference().child("Paquetes").child(dataSnapshot.getKey());
+
+                if ((Boolean) dataSnapshot.getValue()){
+                paqueteDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        Paquete paquete = dataSnapshot.getValue(Paquete.class);
+                        paquetes.add(paquete);
+                        adaptador.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });} else {
+
+                    paqueteDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            Paquete paquete = dataSnapshot.getValue(Paquete.class);
+                            paquetes.remove(paquete);
+                            adaptador.notifyDataSetChanged();
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+
+                }
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+
+        adaptador = new PaqueteAdapter(Main2Activity.this,paquetes);
         paquete.setAdapter(adaptador);
+
 
         paquete.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -86,6 +201,7 @@ public class Main2Activity extends AppCompatActivity
                 Intent detallePaquete = new Intent(Main2Activity.this,DetallePaquete.class);
                 detallePaquete.putExtra("paquete", seleccionado);
                 startActivity(detallePaquete);
+
             }
         });
 
