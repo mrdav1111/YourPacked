@@ -3,10 +3,15 @@ apply plugin: 'com.android.application'
 android {
     signingConfigs {
         debug {
-            keyPassword '052017'
-            storeFile file('C:/Users/angel/llavero/llave_yourpacked')
-            storePassword '052017'
-            keyAlias 'mykey'
+            def Properties localProps = new Properties()
+            localProps.load(new FileInputStream(file('../local.properties')))
+            def Properties keyProps = new Properties()
+//            assert localProps['keystore.props.file'];
+            keyProps.load(new FileInputStream(file('../keystore.properties')))
+            storeFile file(keyProps["store"])
+            keyAlias keyProps["alias"]
+            storePassword keyProps["storePass"]
+            keyPassword keyProps["pass"]
         }
     }
     compileSdkVersion 25
