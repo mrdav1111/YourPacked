@@ -5,11 +5,15 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.method.DateTimeKeyListener;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import static java.lang.System.out;
+import static java.lang.System.runFinalization;
 
 /**
  * Created by angel on 25/6/2017.
@@ -19,6 +23,22 @@ public class Paquete implements Parcelable {
     String noGuia;
     ArrayList<String> estado = new ArrayList<>();
     String fecha;
+    Double lat = new Double(0);
+    Double lng = new Double(0);
+
+    public ArrayList<Double>  getUbicacion() {
+        ArrayList<Double> ubicacion = new ArrayList<>();
+        ubicacion.add(lat);
+        ubicacion.add(lng);
+
+        return ubicacion;
+
+    }
+
+    public void setUbicacion(double v, double v1) {
+        this.lat = v;
+        this.lng = v1;
+    }
 
     public Paquete(){}
 
@@ -66,7 +86,10 @@ public class Paquete implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(noGuia);
         dest.writeSerializable(estado);
-        dest.writeSerializable(fecha);
+       // dest.writeDouble(lat);
+        //dest.writeDouble(lng);
+        //dest.writeSerializable(fecha);
+
     }
 
     public Paquete(Parcel in){
