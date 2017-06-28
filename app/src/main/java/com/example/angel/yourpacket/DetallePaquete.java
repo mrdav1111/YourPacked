@@ -14,6 +14,11 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 
@@ -21,9 +26,16 @@ public class DetallePaquete extends AppCompatActivity implements OnMapReadyCallb
     TextView noGuia, mensajero, fecha;
     MapView mapView;
     GoogleMap map;
+    Paquete paqueteSeleccionado;
+    DatabaseReference objPaquete;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
+        paqueteSeleccionado = (Paquete) getIntent().getParcelableExtra("paquete");
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalle_paquete);
 
@@ -35,12 +47,27 @@ public class DetallePaquete extends AppCompatActivity implements OnMapReadyCallb
         fecha = (TextView) findViewById(R.id.horaSalida);
         mensajero = (TextView) findViewById(R.id.mensajero);
 
-        Paquete paqueteSeleccionado = (Paquete) getIntent().getParcelableExtra("paquete");
+        objPaquete = FirebaseDatabase.getInstance().getReference().child("Paquetes").child(paqueteSeleccionado.getNoGuia());
+
+        objPaquete.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                paqueteSeleccionado = dataSnapshot.getValue(Paquete.class);
+                mapView.getMapAsync(DetallePaquete.this);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
 
         noGuia.setText(paqueteSeleccionado.getNoGuia());
         fecha.setText(paqueteSeleccionado.getFecha());
 
-        mapView.getMapAsync(this);
+
     }
 
     @Override
@@ -67,15 +94,39 @@ public class DetallePaquete extends AppCompatActivity implements OnMapReadyCallb
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        LatLng sydney = new LatLng(-33.867, 151.206);
+
+
+        map = googleMap;
+        final LatLng sydney = new LatLng(paqueteSeleccionado.getUbicacion().get(0), paqueteSeleccionado.getUbicacion().get(1));
+
+        objPaquete.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                map.clear();
+                Paquete paqueteActualizado = dataSnapshot.getValue(Paquete.class);
+                LatLng mov = new LatLng(paqueteActualizado.getUbicacion().get(0), paqueteActualizado.getUbicacion().get(1));
+                map.moveCamera(CameraUpdateFactory.newLatLngZoom(mov, 15));
+
+                map.addMarker(new MarkerOptions()
+                        .title(paqueteSeleccionado.getNoGuia())
+                        .snippet("Ubicacion actual de tu paquete")
+                        .position(mov));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
 
 
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 13));
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 15));
 
-        googleMap.addMarker(new MarkerOptions()
-                .title("Sydney")
-                .snippet("The most populous city in Australia.")
+        map.addMarker(new MarkerOptions()
+                .title(paqueteSeleccionado.getNoGuia())
+                .snippet("Ubicacion actual de tu paquete")
                 .position(sydney));
 
     }

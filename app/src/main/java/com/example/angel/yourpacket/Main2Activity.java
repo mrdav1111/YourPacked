@@ -23,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseListAdapter;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.ProviderQueryResult;
 import com.google.firebase.database.ChildEventListener;
@@ -69,6 +70,12 @@ public class Main2Activity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        Paquete paqueteUbicado = new Paquete("YP00004");
+        paqueteUbicado.setUbicacion(18.4873827,-69.9633925);
+
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference();
+        db.child("Paquetes").child(paqueteUbicado.getNoGuia()).setValue(paqueteUbicado);
 
 
       View navheaderview = navigationView.getHeaderView(0);
