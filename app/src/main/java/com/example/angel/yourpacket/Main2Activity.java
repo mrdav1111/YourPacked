@@ -255,6 +255,9 @@ public class Main2Activity extends AppCompatActivity
         } else if (id == R.id.nav_gallery) {
 
         } else if (id == R.id.nav_slideshow) {
+            Intent intent = new Intent(Main2Activity.this,Contactanos.class);
+            //Log.i("i", user.getEmail());
+            Main2Activity.this.startActivity(intent);
 
         } else if (id == R.id.nav_manage) {
             FirebaseAuth.getInstance().signOut();
