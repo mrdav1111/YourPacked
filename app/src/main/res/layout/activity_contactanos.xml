@@ -24,7 +24,6 @@
         android:layout_height="55dp"
         android:inputType="textPersonName"
         android:gravity="center_vertical"
-        android:text=""
         app:layout_constraintTop_toTopOf="parent"
 
         app:layout_constraintLeft_toLeftOf="parent"
