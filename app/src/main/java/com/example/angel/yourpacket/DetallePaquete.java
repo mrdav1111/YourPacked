@@ -1,5 +1,6 @@
 package com.example.angel.yourpacket;
 
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
@@ -31,6 +32,7 @@ public class DetallePaquete extends AppCompatActivity implements OnMapReadyCallb
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
 
 
         paqueteSeleccionado = (Paquete) getIntent().getParcelableExtra("paquete");

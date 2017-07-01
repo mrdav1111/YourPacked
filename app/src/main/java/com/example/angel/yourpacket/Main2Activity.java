@@ -1,9 +1,11 @@
 package com.example.angel.yourpacket;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -44,7 +46,7 @@ public class Main2Activity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     TextView email;
-    PaqueteAdapter adaptador;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,10 +59,11 @@ public class Main2Activity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "Todavia no se ha implementado", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
+        setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -71,148 +74,20 @@ public class Main2Activity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        Paquete paqueteUbicado = new Paquete("YP00004");
-        paqueteUbicado.setUbicacion(18.4873827,-69.9633925);
-
-        DatabaseReference db = FirebaseDatabase.getInstance().getReference();
-        db.child("Paquetes").child(paqueteUbicado.getNoGuia()).setValue(paqueteUbicado);
 
 
-      View navheaderview = navigationView.getHeaderView(0);
+
+        View navheaderview = navigationView.getHeaderView(0);
         TextView email = (TextView) navheaderview.findViewById(R.id.textEmailView);
         email.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
 
-        final ListView paquete = (ListView) findViewById(R.id.listaPaquetes);
+        DrawerLayout d = (DrawerLayout) findViewById(R.id.drawer_layout);
 
-        final ArrayList<Paquete> paquetes = new  ArrayList<Paquete>();
-
-
-
-
-
-        DatabaseReference bd = FirebaseDatabase.getInstance()
-                .getReference()
-                .child("Usuarios")
-                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                .child("paquetes");
-
-
-       for (Paquete p : paquetes){
-            bd.child(p.getNoGuia()).setValue(true);
-            bd.getParent().getParent().getParent().child("Paquetes").child(p.getNoGuia()).setValue(p);
+        if (savedInstanceState == null){
+        navigationView.getMenu().getItem(0).setChecked(true);
+        Fragment listaPaquetes = new ListaPaquetes();
+        getSupportFragmentManager().beginTransaction().replace(R.id.ContenidoMain, listaPaquetes).commit();
         }
-
-      bd.addListenerForSingleValueEvent(new ValueEventListener() {
-           @Override
-           public void onDataChange(DataSnapshot dataSnapshot) {
-               final Iterable<DataSnapshot> paquetes1 = dataSnapshot.getChildren();
-               DatabaseReference paqueteRaiz = FirebaseDatabase.getInstance().getReference().child("Paquetes");
-               for (DataSnapshot aBoolean : paquetes1) {
-
-                   if ((Boolean) aBoolean.getValue()){
-                       paqueteRaiz.child(aBoolean.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
-                           @Override
-                           public void onDataChange(DataSnapshot dataSnapshot) {
-                               Paquete paquete1 = dataSnapshot.getValue(Paquete.class);
-                               paquetes.add(paquete1);
-                               adaptador.notifyDataSetChanged();
-                           }
-
-                           @Override
-                           public void onCancelled(DatabaseError databaseError) {
-
-                           }
-                       });
-                   }
-
-               }
-
-           }
-
-           @Override
-           public void onCancelled(DatabaseError databaseError) {
-
-           }
-       });
-
-        bd.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Toast.makeText(getApplicationContext(),"Child added",Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                Toast.makeText(getApplicationContext(),dataSnapshot.getKey()+"1",Toast.LENGTH_SHORT).show();
-                DatabaseReference paqueteDatabaseReference = FirebaseDatabase.getInstance().getReference().child("Paquetes").child(dataSnapshot.getKey());
-
-                if ((Boolean) dataSnapshot.getValue()){
-                paqueteDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        Paquete paquete = dataSnapshot.getValue(Paquete.class);
-                        paquetes.add(paquete);
-                        adaptador.notifyDataSetChanged();
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });} else {
-
-                    paqueteDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            Paquete paquete = dataSnapshot.getValue(Paquete.class);
-                            paquetes.remove(paquete);
-                            adaptador.notifyDataSetChanged();
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-
-                        }
-                    });
-
-                }
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-
-
-        adaptador = new PaqueteAdapter(Main2Activity.this,paquetes);
-        paquete.setAdapter(adaptador);
-
-
-        paquete.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Paquete seleccionado = paquetes.get((int)id);
-                Intent detallePaquete = new Intent(Main2Activity.this,DetallePaquete.class);
-                detallePaquete.putExtra("paquete", seleccionado);
-                startActivity(detallePaquete);
-
-            }
-        });
-
-
     }
 
     @Override
@@ -259,12 +134,18 @@ public class Main2Activity extends AppCompatActivity
 
         if (id == R.id.nav_camera) {
             // Handle the camera action
+            Fragment listaPaquetes = new ListaPaquetes();
+            getSupportFragmentManager().beginTransaction().replace(R.id.ContenidoMain, listaPaquetes).commit();
         } else if (id == R.id.nav_gallery) {
 
         } else if (id == R.id.nav_slideshow) {
-            Intent intent = new Intent(Main2Activity.this,Contactanos.class);
+
+            Fragment contactanos = new Contactanos();
+            getSupportFragmentManager().beginTransaction().replace(R.id.ContenidoMain, contactanos).commit();
+
+           /* Intent intent = new Intent(Main2Activity.this,Contactanos.class);
             //Log.i("i", user.getEmail());
-            Main2Activity.this.startActivity(intent);
+            Main2Activity.this.startActivity(intent);*/
 
         } else if (id == R.id.nav_manage) {
             FirebaseAuth.getInstance().signOut();
