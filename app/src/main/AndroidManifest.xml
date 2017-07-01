@@ -46,6 +46,10 @@
             android:name=".DetallePaquete"
             android:label="Detalles"
             android:screenOrientation="portrait"/>
+        <activity
+            android:name=".EnviarPaquete"
+            android:label="@string/title_activity_enviar_paquete"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
