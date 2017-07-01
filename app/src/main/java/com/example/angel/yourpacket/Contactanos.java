@@ -25,6 +25,8 @@ public class Contactanos extends Fragment{
 
         v = inflater.inflate(R.layout.activity_contactanos,container,false);
 
+        getActivity().setTitle("Contactanos");
+
         Button button3 = (Button) v.findViewById(R.id.button3);
         button3.setOnClickListener(new View.OnClickListener() {
             @Override

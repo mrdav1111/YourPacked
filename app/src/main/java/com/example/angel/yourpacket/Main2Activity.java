@@ -74,9 +74,6 @@ public class Main2Activity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-
-
-
         View navheaderview = navigationView.getHeaderView(0);
         TextView email = (TextView) navheaderview.findViewById(R.id.textEmailView);
         email.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
@@ -137,6 +134,8 @@ public class Main2Activity extends AppCompatActivity
             Fragment listaPaquetes = new ListaPaquetes();
             getSupportFragmentManager().beginTransaction().replace(R.id.ContenidoMain, listaPaquetes).commit();
         } else if (id == R.id.nav_gallery) {
+            Fragment hitorial = new HistorialPaquete();
+            getSupportFragmentManager().beginTransaction().replace(R.id.ContenidoMain, hitorial).commit();
 
         } else if (id == R.id.nav_slideshow) {
 
