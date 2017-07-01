@@ -52,7 +52,11 @@
         <activity
             android:name=".DetallePaquete"
             android:label="Detalles" />
-        <activity android:name=".Contactanos"></activity>
+        <activity android:name=".Contactanos" />
+        <activity
+            android:name=".EnviarPaquete"
+            android:label="@string/title_activity_enviar_paquete"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
