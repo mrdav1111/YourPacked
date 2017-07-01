@@ -269,7 +269,7 @@ public class Main2Activity extends AppCompatActivity
         } else if (id == R.id.nav_manage) {
             FirebaseAuth.getInstance().signOut();
             finish();
-            Intent intent = new Intent(Main2Activity.this,LoginActivity.class);
+            Intent intent = new Intent(Main2Activity.this,Login.class);
             //Log.i("i", user.getEmail());
             Main2Activity.this.startActivity(intent);
         }

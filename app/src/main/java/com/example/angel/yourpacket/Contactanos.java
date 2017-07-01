@@ -1,5 +1,7 @@
 package com.example.angel.yourpacket;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -26,6 +28,15 @@ public class Contactanos extends AppCompatActivity implements View.OnClickListen
         Button button3 = (Button) findViewById(R.id.button3);
         button3.setOnClickListener(this);
 
+        Button button7 = (Button) findViewById(R.id.button7);
+        button7.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Uri uri = Uri.parse("https://www.facebook.com/YourPacked-837486679739783/"); // missing 'http://' will cause crashed
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(intent);
+            }
+        });
 
     }
 
