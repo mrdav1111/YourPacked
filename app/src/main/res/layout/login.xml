@@ -19,7 +19,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="35dp"
         android:id="@+id/email"
-        android:drawableLeft="@drawable/user"
+
         android:hint="EMAIL"
         android:drawableLeft="@drawable/email"
         android:ems="10"/>
