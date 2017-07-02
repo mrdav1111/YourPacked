@@ -12,14 +12,15 @@
         android:id="@+id/section_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+
         />
     <EditText
         android:layout_width="200dp"
         android:layout_height="40dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="35dp"
-        android:hint="NOMBRE"
-        android:drawableLeft="@drawable/user"
+        android:hint="EMAIL"
+        android:drawableLeft="@drawable/email"
         android:ems="10"/>
 
     <EditText
@@ -28,6 +29,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="85dp"
         android:hint="CONTRASEÑA"
+        android:inputType="textPassword"
         android:drawableLeft="@drawable/pass"
         android:ems="10"/>
     <Button
