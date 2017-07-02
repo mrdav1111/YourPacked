@@ -25,5 +25,34 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"/>
 
+    <Button
+        android:id="@+id/button4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:text="Siguiente"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="230dp"
+        />
+
+    <ImageSwitcher
+        android:layout_width="120dp"
+        android:layout_height="100dp"
+        android:layout_alignEnd="@+id/textView2"
+        android:layout_below="@+id/mapView3"
+        android:layout_marginEnd="32dp"
+        android:layout_marginTop="36dp"
+        android:id="@+id/imageSwitcher" />
+
+    <Button
+        android:id="@+id/button5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="23dp"
+        android:text="Elija"
+        android:background="@color/colorPrimary"
+        android:layout_alignTop="@+id/imageSwitcher"
+        android:layout_toEndOf="@+id/imageSwitcher" />
+
 
 </RelativeLayout>
