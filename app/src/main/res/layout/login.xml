@@ -18,9 +18,10 @@
         android:layout_height="40dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="35dp"
-        android:hint="NOMBRE"
         android:id="@+id/email"
         android:drawableLeft="@drawable/user"
+        android:hint="EMAIL"
+        android:drawableLeft="@drawable/email"
         android:ems="10"/>
 
     <EditText
@@ -30,6 +31,7 @@
         android:layout_marginTop="85dp"
         android:hint="CONTRASEÑA"
         android:id="@+id/contra"
+        android:inputType="textPassword"
         android:drawableLeft="@drawable/pass"
         android:ems="10"/>
     <Button

@@ -16,9 +16,8 @@
     <EditText
         android:layout_width="200dp"
         android:layout_height="40dp"
-        android:layout_marginLeft="60dp"
-        android:layout_marginTop="15dp"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
         android:hint="NOMBRE"
         android:id="@+id/email"
         android:drawableLeft="@drawable/user"
@@ -27,20 +26,19 @@
     <EditText
         android:layout_width="200dp"
         android:layout_height="40dp"
-        android:layout_marginLeft="60dp"
-        android:layout_marginTop="60dp"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="60dp"
         android:hint="CONTRASEÑA"
         android:id="@+id/contra"
+        android:inputType="textPassword"
         android:drawableLeft="@drawable/pass"
         android:ems="10"/>
     <EditText
         android:layout_width="200dp"
         android:layout_height="40dp"
-        android:layout_marginLeft="60dp"
-        android:layout_marginTop="105dp"
         android:layout_centerHorizontal="true"
-        android:hint="EMAIL"
+        android:layout_marginTop="105dp"
+        android:hint="Confirmar contraseña"
         android:id="@+id/contra2"
         android:drawableLeft="@drawable/pass"
         android:ems="10"/>
@@ -49,7 +47,6 @@
         android:layout_width="200dp"
         android:layout_height="40dp"
         android:layout_marginTop="150dp"
-        android:layout_marginLeft="60dp"
         android:layout_centerHorizontal="true"
         android:text="Registrarse"
         android:id="@+id/registrar"
