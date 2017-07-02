@@ -10,13 +10,14 @@
 
     <TextView
         android:id="@+id/textView3"
-        android:layout_width="164dp"
+        android:layout_width="143dp"
         android:layout_height="29dp"
         android:text="Ingrese su Inquietud"
-        android:layout_marginBottom="40dp"
+        android:layout_marginBottom="30dp"
         app:layout_constraintBottom_toTopOf="@+id/editText"
-        android:layout_marginLeft="110dp"
-        app:layout_constraintLeft_toLeftOf="parent" />
+        android:layout_marginLeft="121dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginStart="121dp" />
 
     <EditText
         android:id="@+id/editText"
@@ -30,21 +31,17 @@
 
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintHorizontal_bias="0.523"
-        android:layout_marginTop="75dp"
-        tools:layout_editor_absoluteY="55dp"
-        tools:layout_editor_absoluteX="14dp" />
+        android:layout_marginTop="75dp" />
 
     <ImageView
         android:id="@+id/imageView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/gustavo"
-        android:layout_marginTop="0dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
 
-        android:layout_marginBottom="-87dp"
-        app:layout_constraintTop_toBottomOf="@+id/button3" />
+        app:srcCompat="@drawable/gustavo"
+        android:layout_marginStart="4dp"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="16dp" />
 
     <TextView
         android:id="@+id/textView4"
@@ -54,15 +51,47 @@
         android:layout_marginRight="191dp"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginTop="25dp"
-        app:layout_constraintTop_toBottomOf="@+id/button3" />
+        app:layout_constraintTop_toBottomOf="@+id/button3"
+        android:layout_marginEnd="191dp" />
 
     <Button
         android:id="@+id/button3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Button"
-        android:layout_marginRight="148dp"
+        android:text="Enviar"
+        android:background="@color/colorPrimary"
         app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@+id/editText" />
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/editText"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+
+
+
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="392dp"
+        android:layout_height="119dp"
+        android:background="@color/colorPrimary"
+        tools:layout_editor_absoluteX="0dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/imageView4"
+        tools:layout_editor_absoluteY="460dp">
+        <Button
+            android:id="@+id/button7"
+            android:layout_width="129dp"
+            android:layout_height="48dp"
+            android:text="Facebook"
+            android:background="#3b5998"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginLeft="8dp"
+
+            android:layout_marginStart="190dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            tools:layout_editor_absoluteY="4dp"
+            app:layout_constraintHorizontal_bias="0.721" />
+
+    </android.support.constraint.ConstraintLayout>
+
+
 </android.support.constraint.ConstraintLayout>
