@@ -40,7 +40,7 @@ public class Contactanos extends Fragment{
                 Uri uri = Uri.parse("https://www.facebook.com/YourPacked-837486679739783/"); // missing 'http://' will cause crashed
                 Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                 startActivity(intent);
-            }
+            }});
 
         Button button3 = (Button) v.findViewById(R.id.button3);
         button3.setOnClickListener(new View.OnClickListener() {
