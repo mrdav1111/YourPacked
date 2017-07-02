@@ -77,7 +77,7 @@
             android:layout_width="129dp"
             android:layout_height="48dp"
             android:text=""
-            android:background="@mipmap/facebook"
+            android:background="@drawable/fbb"
             android:layout_margin="30dp"
 
             android:layout_marginStart="190dp"
