@@ -14,33 +14,33 @@
         android:layout_height="wrap_content"
         />
     <EditText
-        android:layout_width="250dp"
+        android:layout_width="260dp"
         android:layout_height="40dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="15dp"
-        android:hint="NOMBRE"
+        android:hint="Nombre"
         android:id="@+id/email"
         android:drawableLeft="@drawable/user"
         android:ems="10"/>
 
     <EditText
-        android:layout_width="250dp"
+        android:layout_width="260dp"
         android:layout_height="40dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="60dp"
-        android:hint="CONTRASEÑA"
+        android:hint="Contraseña"
         android:id="@+id/contra"
         android:inputType="textPassword"
         android:drawableLeft="@drawable/pass"
         android:ems="10"/>
     <EditText
-        android:layout_width="250dp"
+        android:layout_width="260dp"
         android:layout_height="40dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="105dp"
-        android:hint="Confirmar contraseña"
+        android:hint="Email"
         android:id="@+id/contra2"
-        android:drawableLeft="@drawable/pass"
+        android:drawableLeft="@drawable/email"
         android:ems="10"/>
 
     <Button

@@ -123,7 +123,7 @@ public class Login extends AppCompatActivity  {
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "Iniciar Seccion";
+                    return "Iniciar Sesion";
                 case 1:
                     return "Registrarse";
 

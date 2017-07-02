@@ -20,7 +20,7 @@
         android:layout_marginTop="35dp"
         android:id="@+id/email"
 
-        android:hint="EMAIL"
+        android:hint="Email"
         android:drawableLeft="@drawable/email"
         android:ems="10"/>
 
@@ -29,7 +29,7 @@
         android:layout_height="40dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="85dp"
-        android:hint="CONTRASEÑA"
+        android:hint="Contraseña"
         android:id="@+id/contra"
         android:inputType="textPassword"
         android:drawableLeft="@drawable/pass"
