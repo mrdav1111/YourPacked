@@ -31,7 +31,7 @@ public class PlaceholderFragment extends Fragment implements OnMapReadyCallback 
     Button button5;
 
     ImageSwitcher imageSwitcher;
-    Integer[] images = {R.drawable.carro, R.drawable.motor};
+    Integer[] images = {R.drawable.icon, R.drawable.user};
 
     int i = 0;
     /**
