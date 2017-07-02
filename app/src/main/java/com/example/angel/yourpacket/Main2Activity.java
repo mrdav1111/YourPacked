@@ -59,8 +59,8 @@ public class Main2Activity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Todavia no se ha implementado", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent pedido = new Intent(Main2Activity.this, EnviarPaquete.class);
+                startActivity(pedido);
             }
         });
         setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
