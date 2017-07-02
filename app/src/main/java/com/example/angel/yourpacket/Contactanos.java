@@ -33,6 +33,8 @@ public class Contactanos extends Fragment{
 
         v = inflater.inflate(R.layout.activity_contactanos,container,false);
 
+        getActivity().setTitle("Contactanos");
+
         Button button7 = (Button) v.findViewById(R.id.button7);
         button7.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,4 +55,7 @@ public class Contactanos extends Fragment{
 
         return v;
     }
+
+
+
 }
