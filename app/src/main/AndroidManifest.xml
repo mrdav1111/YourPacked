@@ -31,8 +31,7 @@
             android:name=".Main2Activity"
             android:label="@string/title_activity_main2"
             android:launchMode="singleInstance"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".DetallePaquete"
             android:label="Detalles" />
@@ -47,11 +46,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-            android:label="Detalles"
-            android:screenOrientation="portrait"/>
+        android:label="Detalles"
+        android:screenOrientation="portrait"/>
         <activity
             android:name=".EnviarPaquete"
             android:label="@string/title_activity_enviar_paquete"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Mensajero"
+            android:label="@string/title_activity_mensajero"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

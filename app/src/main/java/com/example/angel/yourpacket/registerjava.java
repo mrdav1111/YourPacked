@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -65,33 +66,27 @@ public class registerjava extends android.support.v4.app.Fragment {
             public void onClick(View v) {
                 if (contra.getText().toString().equals(contra2.getText().toString())){
 
-                    mAuth.createUserWithEmailAndPassword(email.getText().toString(), contra.getText().toString())
-                            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                                @Override
-                                public void onComplete(@NonNull Task<AuthResult> task) {
+                    mAuth.createUserWithEmailAndPassword(email.getText().toString(), contra.getText().toString()).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                        @Override
+                        public void onSuccess(AuthResult authResult) {
 
-                                    Log.d(TAG, "createUserWithEmail:onComplete:" + task.isSuccessful());
+                            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                            Usuario usuario = new Usuario(user.getEmail(),2);
 
-                                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                                    Usuario usuario = new Usuario(user.getEmail(),2);
+                            DatabaseReference usuarioReference = FirebaseDatabase
+                                    .getInstance()
+                                    .getReference()
+                                    .child("Usuarios")
+                                    .child(user.getUid()).child("info");
 
-                                    DatabaseReference usuarioReference = FirebaseDatabase
-                                            .getInstance()
-                                            .getReference()
-                                            .child("Usuarios")
-                                            .child(user.getUid());
+                            usuarioReference.setValue(usuario);
 
-                                    usuarioReference.setValue(usuario);
+                        }
+                    });
 
-                                    // If sign in fails, display a message to the user. If sign in succeeds
-                                    // the auth state listener will be notified and logic to handle the
-                                    // signed in user can be handled in the listener.
-                                    if (!task.isSuccessful()) {
-                                        Toast.makeText(getContext(), R.string.auth_failed,
-                                                Toast.LENGTH_SHORT).show();
 
-                                }
-                            }});
+
+
 
                 } else {
                     Toast.makeText(getContext(),"La contraseñas no coinciden",Toast.LENGTH_SHORT).show();
