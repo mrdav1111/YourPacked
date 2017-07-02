@@ -9,6 +9,12 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.Button;
+import android.widget.ImageSwitcher;
+import android.widget.ImageView;
+import android.widget.ViewSwitcher;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -22,6 +28,12 @@ import com.google.android.gms.maps.model.MarkerOptions;
  * A placeholder fragment containing a simple view.
  */
 public class PlaceholderFragment extends Fragment implements OnMapReadyCallback {
+    Button button5;
+
+    ImageSwitcher imageSwitcher;
+    Integer[] images = {R.drawable.carro, R.drawable.motor};
+
+    int i = 0;
     /**
      * The fragment argument representing the section number for this
      * fragment.
@@ -51,16 +63,56 @@ public class PlaceholderFragment extends Fragment implements OnMapReadyCallback 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_enviar_paquete, container, false);
-           /* TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));*/
-
-        map = (MapView)rootView.findViewById(R.id.mapView3);
+        map = (MapView) rootView.findViewById(R.id.mapView3);
 
         map.onCreate(savedInstanceState);
         map.getMapAsync(this);
 
+
+        imageSwitcher = (ImageSwitcher) rootView.findViewById(R.id.imageSwitcher);
+
+        imageSwitcher.setFactory(new ViewSwitcher.ViewFactory() {
+            @Override
+            public View makeView() {
+                ImageView imageView = new ImageView(getContext());
+                imageView.setScaleType(imageView.getScaleType());
+                imageView.setLayoutParams(new ImageSwitcher.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+                return imageView;
+            }
+        });
+        Animation in = AnimationUtils.loadAnimation(getContext(), R.anim.in);
+        Animation out = AnimationUtils.loadAnimation(getContext(), R.anim.out);
+
+        imageSwitcher.setInAnimation(in);
+        imageSwitcher.setOutAnimation(out);
+
+
+
+        button5 = (Button) rootView.findViewById(R.id.button5);
+        button5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (i < images.length - 1) {
+                    i++;
+                    imageSwitcher.setImageResource(images[i]);
+                }
+                else {
+                    i = 0;
+                    imageSwitcher.setImageResource(images[i]);
+                }
+
+
+           /* TextView textView = (TextView) rootView.findViewById(R.id.section_label);
+            textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));*/
+
+
+
+                }
+            });
         return rootView;
-    }
+        }
+
+
 
     @Override
     public void onResume() {
