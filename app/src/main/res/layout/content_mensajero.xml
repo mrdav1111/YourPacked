@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.example.angel.yourpacket.Mensajero"
-    tools:showIn="@layout/app_bar_mensajero">
+    tools:showIn="@layout/app_bar_mensajero"
+    android:id="@+id/contenidoMensajero">
 
 </android.support.constraint.ConstraintLayout>

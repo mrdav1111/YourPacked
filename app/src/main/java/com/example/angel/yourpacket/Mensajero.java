@@ -2,8 +2,10 @@ package com.example.angel.yourpacket;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -15,6 +17,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.google.firebase.auth.FirebaseAuth;
+
+import java.util.List;
 
 public class Mensajero extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -85,6 +89,8 @@ public class Mensajero extends AppCompatActivity
 
         if (id == R.id.nav_camera) {
             // Handle the camera action
+            ListaPaquetesMensajero paquetes = new ListaPaquetesMensajero();
+            getSupportFragmentManager().beginTransaction().replace(R.id.contenidoMensajero,paquetes).commit();
         } else if (id == R.id.nav_gallery) {
 
         } else if (id == R.id.nav_slideshow) {
@@ -94,7 +100,7 @@ public class Mensajero extends AppCompatActivity
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
-            
+
             FirebaseAuth.getInstance().signOut();
             finish();
             Intent intent = new Intent(Mensajero.this,Login.class);
@@ -106,4 +112,5 @@ public class Mensajero extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
 }

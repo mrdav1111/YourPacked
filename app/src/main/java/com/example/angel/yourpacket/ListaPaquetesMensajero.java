@@ -1,9 +1,15 @@
 package com.example.angel.yourpacket;
 
+import android.*;
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +18,10 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -26,12 +36,12 @@ import java.util.ArrayList;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link ListaPaquetes.OnFragmentInteractionListener} interface
+ * {@link ListaPaquetesMensajero.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link ListaPaquetes#newInstance} factory method to
+ * Use the {@link ListaPaquetesMensajero#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ListaPaquetes extends Fragment {
+public class ListaPaquetesMensajero extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -41,12 +51,28 @@ public class ListaPaquetes extends Fragment {
     private String mParam1;
     private String mParam2;
 
-  //  private OnFragmentInteractionListener mListener;
+    //  private OnFragmentInteractionListener mListener;
 
-    PaqueteAdapter adaptador;
+    PaqueteAdapterMensajero adaptador;
+    private GoogleApiClient mGoogleApiClient;
+    Location ubicacion;
+    private LocationManager locationManager;
+    private android.location.LocationListener locationListener;
 
-    public ListaPaquetes() {
+    public ListaPaquetesMensajero() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode){
+            case 10:
+                if (grantResults.length>0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 5f, locationListener);
+                }
+                return;
+
+        }
     }
 
     /**
@@ -75,24 +101,23 @@ public class ListaPaquetes extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }*/
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_lista_paquetes, container, false);
+        View v = inflater.inflate(R.layout.fragment_lista_paquetes_mensajero, container, false);
 
         Paquete paqueteUbicado = new Paquete("YP00004");
-        paqueteUbicado.setUbicacion(18.4873827,-69.9633925);
+        paqueteUbicado.setUbicacion(18.4873827, -69.9633925);
 
         getActivity().setTitle("YourPacked");
 
         DatabaseReference db = FirebaseDatabase.getInstance().getReference();
-        //db.child("Paquetes").child(paqueteUbicado.getNoGuia()).setValue(paqueteUbicado);
+        db.child("Paquetes").child(paqueteUbicado.getNoGuia()).setValue(paqueteUbicado);
 
         final ListView paquete = (ListView) v.findViewById(R.id.listaPaquetes);
 
-        final ArrayList<Paquete> paquetes = new  ArrayList<Paquete>();
+        final ArrayList<Paquete> paquetes = new ArrayList<Paquete>();
 
         DatabaseReference bd = FirebaseDatabase.getInstance()
                 .getReference()
@@ -101,7 +126,7 @@ public class ListaPaquetes extends Fragment {
                 .child("paquetes");
 
 
-        for (Paquete p : paquetes){
+        for (Paquete p : paquetes) {
             bd.child(p.getNoGuia()).setValue(true);
             bd.getParent().getParent().getParent().child("Paquetes").child(p.getNoGuia()).setValue(p);
         }
@@ -113,7 +138,7 @@ public class ListaPaquetes extends Fragment {
                 DatabaseReference paqueteRaiz = FirebaseDatabase.getInstance().getReference().child("Paquetes");
                 for (DataSnapshot aBoolean : paquetes1) {
 
-                    if ((Boolean) aBoolean.getValue()){
+                    if ((Boolean) aBoolean.getValue()) {
                         paqueteRaiz.child(aBoolean.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -138,6 +163,57 @@ public class ListaPaquetes extends Fragment {
 
             }
         });
+
+
+
+
+
+        if (ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION},10);
+        } else {
+
+
+
+
+            locationManager = (LocationManager) getActivity().getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
+
+            locationListener = new android.location.LocationListener() {
+                @Override
+                public void onLocationChanged(Location location) {
+
+
+                }
+
+                @Override
+                public void onStatusChanged(String provider, int status, Bundle extras) {
+
+                }
+
+                @Override
+                public void onProviderEnabled(String provider) {
+
+                }
+
+                @Override
+                public void onProviderDisabled(String provider) {
+
+                }
+            };
+
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 5f, locationListener);
+            ubicacion = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+
+        }
+
+
 
         bd.addChildEventListener(new ChildEventListener() {
             @Override
@@ -183,6 +259,8 @@ public class ListaPaquetes extends Fragment {
 
             }
 
+
+
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
 
@@ -197,11 +275,21 @@ public class ListaPaquetes extends Fragment {
             public void onCancelled(DatabaseError databaseError) {
 
             }
+
+
+
+
+
         });
 
 
 
-        adaptador = new PaqueteAdapter(getContext(),paquetes);
+
+
+
+
+
+        adaptador = new PaqueteAdapterMensajero(getContext(),paquetes,ubicacion);
         paquete.setAdapter(adaptador);
 
 
@@ -209,9 +297,9 @@ public class ListaPaquetes extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Paquete seleccionado = paquetes.get((int)id);
-                Intent detallePaquete = new Intent(getContext(),DetallePaquete.class);
-                detallePaquete.putExtra("paquete", seleccionado);
-                startActivity(detallePaquete);
+                Intent paqueteEnCurso = new Intent(getContext(),PaqueteEnCurso.class);
+                paqueteEnCurso.putExtra("paquete", seleccionado);
+                startActivity(paqueteEnCurso);
 
             }
         });

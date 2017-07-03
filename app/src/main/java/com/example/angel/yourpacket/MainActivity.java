@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
                cerrarsesion();
             }
         });
+
     }
 
     public void cerrarsesion(){
