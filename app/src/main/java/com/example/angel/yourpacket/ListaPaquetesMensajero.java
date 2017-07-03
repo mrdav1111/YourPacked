@@ -105,7 +105,7 @@ public class ListaPaquetesMensajero extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_lista_paquetes, container, false);
+        View v = inflater.inflate(R.layout.fragment_lista_paquetes_mensajero, container, false);
 
         Paquete paqueteUbicado = new Paquete("YP00004");
         paqueteUbicado.setUbicacion(18.4873827, -69.9633925);
@@ -164,32 +164,9 @@ public class ListaPaquetesMensajero extends Fragment {
             }
         });
 
-        locationManager = (LocationManager) getActivity().getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
-
-         locationListener = new android.location.LocationListener() {
-            @Override
-            public void onLocationChanged(Location location) {
 
 
-            }
 
-            @Override
-            public void onStatusChanged(String provider, int status, Bundle extras) {
-
-            }
-
-            @Override
-            public void onProviderEnabled(String provider) {
-
-            }
-
-            @Override
-            public void onProviderDisabled(String provider) {
-
-            }
-        };
-
-        ubicacion = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
         if (ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
@@ -201,7 +178,39 @@ public class ListaPaquetesMensajero extends Fragment {
             // for ActivityCompat#requestPermissions for more details.
             requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION},10);
         } else {
+
+
+
+
+            locationManager = (LocationManager) getActivity().getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
+
+            locationListener = new android.location.LocationListener() {
+                @Override
+                public void onLocationChanged(Location location) {
+
+
+                }
+
+                @Override
+                public void onStatusChanged(String provider, int status, Bundle extras) {
+
+                }
+
+                @Override
+                public void onProviderEnabled(String provider) {
+
+                }
+
+                @Override
+                public void onProviderDisabled(String provider) {
+
+                }
+            };
+
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 5f, locationListener);
+            ubicacion = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+
         }
 
 
@@ -288,9 +297,9 @@ public class ListaPaquetesMensajero extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Paquete seleccionado = paquetes.get((int)id);
-                Intent detallePaquete = new Intent(getContext(),DetallePaquete.class);
-                detallePaquete.putExtra("paquete", seleccionado);
-                startActivity(detallePaquete);
+                Intent paqueteEnCurso = new Intent(getContext(),PaqueteEnCurso.class);
+                paqueteEnCurso.putExtra("paquete", seleccionado);
+                startActivity(paqueteEnCurso);
 
             }
         });

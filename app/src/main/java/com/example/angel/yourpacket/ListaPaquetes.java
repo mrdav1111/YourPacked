@@ -88,7 +88,7 @@ public class ListaPaquetes extends Fragment {
         getActivity().setTitle("YourPacked");
 
         DatabaseReference db = FirebaseDatabase.getInstance().getReference();
-        db.child("Paquetes").child(paqueteUbicado.getNoGuia()).setValue(paqueteUbicado);
+        //db.child("Paquetes").child(paqueteUbicado.getNoGuia()).setValue(paqueteUbicado);
 
         final ListView paquete = (ListView) v.findViewById(R.id.listaPaquetes);
 
