@@ -1,5 +1,8 @@
 package com.example.angel.yourpacket;
 
+import android.content.Intent;
+import android.net.Uri;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.gms.location.places.PlaceReport;
@@ -26,7 +30,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class EnviarPaquete extends AppCompatActivity implements OnMapReadyCallback {
+public class EnviarPaquete extends AppCompatActivity implements OnMapReadyCallback, EnviarPaquetepago.OnFragmentInteractionListener {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -99,6 +103,10 @@ public class EnviarPaquete extends AppCompatActivity implements OnMapReadyCallba
 
     }
 
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
+    }
 
 
     /**
@@ -119,6 +127,9 @@ public class EnviarPaquete extends AppCompatActivity implements OnMapReadyCallba
                 case 0:
                     PlaceholderFragment placeholderFragment = new PlaceholderFragment();
                     return placeholderFragment;
+                case 1:
+                    EnviarPaquetepago enviarPaquetepago = new EnviarPaquetepago();
+                    return enviarPaquetepago;
             }
             return null;
         }
@@ -126,7 +137,7 @@ public class EnviarPaquete extends AppCompatActivity implements OnMapReadyCallba
         @Override
         public int getCount() {
             // Show 3 total pages.
-            return 1;
+            return 2;
         }
 
         @Override

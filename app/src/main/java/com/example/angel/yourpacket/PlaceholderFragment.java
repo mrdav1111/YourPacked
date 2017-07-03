@@ -8,6 +8,7 @@ import android.*;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -92,6 +93,7 @@ public class PlaceholderFragment extends Fragment implements OnMapReadyCallback 
         imageSwitcher.setOutAnimation(out);
 
 
+
         button5 = (Button) rootView.findViewById(R.id.button5);
         button5.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,6 +110,16 @@ public class PlaceholderFragment extends Fragment implements OnMapReadyCallback 
            /* TextView textView = (TextView) rootView.findViewById(R.id.section_label);
             textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));*/
 
+
+            }
+        });
+
+                }
+            });
+        Button button4 = (Button) rootView.findViewById(R.id.siguiente);
+        button4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
             }
         });
