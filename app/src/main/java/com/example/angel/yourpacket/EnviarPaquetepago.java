@@ -1,12 +1,29 @@
 package com.example.angel.yourpacket;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import java.math.BigDecimal;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.paypal.android.sdk.payments.PayPalConfiguration;
+import com.paypal.android.sdk.payments.PayPalPayment;
+import com.paypal.android.sdk.payments.PayPalService;
+import com.paypal.android.sdk.payments.PaymentActivity;
+import com.paypal.android.sdk.payments.PaymentConfirmation;
+
+import org.json.JSONException;
+import org.w3c.dom.Text;
+
+import static com.example.angel.yourpacket.R.id.container;
 
 
 /**
@@ -18,18 +35,48 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class EnviarPaquetepago extends Fragment {
+
+    //PayPalConfiguration m_configuration;
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    TextView m_response;
+    PayPalConfiguration m_configuration;
+    String m_paypalClientId;
+    Intent m_service;
+    int m_paypalRequestCode = 999;
+
+    private static final String CONFIG_ENVIRONMENT = PayPalConfiguration.ENVIRONMENT_SANDBOX;
+
+    private static final String CONFIG_CLIENT_ID = "AWfB5He94tzPXwWqSlgWPEFW9ssWRK858J9G9tnE8Bc_VFXVMXiyrN-i1_CpGME_T6iVstME5X2rNCs3";
+    private static final int REQUEST_CODE_PAYMENT = 1;
+
+    private static PayPalConfiguration config = new PayPalConfiguration()
+            .environment(CONFIG_ENVIRONMENT)
+            .clientId(CONFIG_CLIENT_ID)
+
+            // configuracion minima del ente
+            .merchantName("YourPacked")
+            .merchantPrivacyPolicyUri(
+                    Uri.parse("https://www.mi_tienda.com/privacy"))
+            .merchantUserAgreementUri(
+                    Uri.parse("https://www.mi_tienda.com/legal"));
+
+    PayPalPayment thingToBuy;
+
 
     private OnFragmentInteractionListener mListener;
 
+
+
+
     public EnviarPaquetepago() {
+
         // Required empty public constructor
     }
 
@@ -43,6 +90,8 @@ public class EnviarPaquetepago extends Fragment {
      */
     // TODO: Rename and change types and number of parameters
     public static EnviarPaquetepago newInstance(String param1, String param2) {
+
+
         EnviarPaquetepago fragment = new EnviarPaquetepago();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
@@ -51,21 +100,70 @@ public class EnviarPaquetepago extends Fragment {
         return fragment;
     }
 
-    @Override
+@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_enviar_paquetepago, container, false);
+        Intent intent = new Intent(getActivity(), PayPalService.class);
+        intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config);
+        getActivity().startService(intent);
+        view.findViewById(R.id.pagar).setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                thingToBuy = new PayPalPayment(new BigDecimal("50"), "USD",
+                        "pelicula", PayPalPayment.PAYMENT_INTENT_SALE);
+                Intent intent = new Intent(getActivity(),
+                        PaymentActivity.class);
+
+                intent.putExtra(PaymentActivity.EXTRA_PAYMENT, thingToBuy);
+
+                startActivityForResult(intent, REQUEST_CODE_PAYMENT);
+            }
+        });
+
+        return view;
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_enviar_paquetepago, container, false);
-    }
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == Activity.RESULT_OK) {
+            PaymentConfirmation confirm = data
+                    .getParcelableExtra(PaymentActivity.EXTRA_RESULT_CONFIRMATION);
+            if (confirm != null) {
+                try {
+
+                    // informacion extra del pedido
+                    System.out.println(confirm.toJSONObject().toString(4));
+                    System.out.println(confirm.getPayment().toJSONObject()
+                            .toString(4));
+
+                    Toast.makeText(getContext(), "Orden procesada",
+                            Toast.LENGTH_LONG).show();
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        } else if (resultCode == Activity.RESULT_CANCELED) {
+            System.out.println("El usuario canceló el pago");
+        }
+
+        }
+
+
+
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {

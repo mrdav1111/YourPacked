@@ -4,6 +4,7 @@ package com.example.angel.yourpacket;
  * Created by angel on 1/7/2017.
  */
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -109,6 +110,13 @@ public class PlaceholderFragment extends Fragment implements OnMapReadyCallback 
 
                 }
             });
+        Button button4 = (Button) rootView.findViewById(R.id.siguiente);
+        button4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
         return rootView;
         }
 

@@ -1,5 +1,8 @@
 package com.example.angel.yourpacket;
 
+import android.content.Intent;
+import android.net.Uri;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -25,7 +29,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class EnviarPaquete extends AppCompatActivity implements OnMapReadyCallback {
+public class EnviarPaquete extends AppCompatActivity implements OnMapReadyCallback, EnviarPaquetepago.OnFragmentInteractionListener {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -68,7 +72,10 @@ public class EnviarPaquete extends AppCompatActivity implements OnMapReadyCallba
             }
         });
 
+
     }
+
+
 
 
     @Override
@@ -98,6 +105,10 @@ public class EnviarPaquete extends AppCompatActivity implements OnMapReadyCallba
 
     }
 
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
+    }
 
 
     /**
@@ -114,13 +125,21 @@ public class EnviarPaquete extends AppCompatActivity implements OnMapReadyCallba
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1);
+            switch (position){
+                case 0:
+                    PlaceholderFragment placeholderFragment = new PlaceholderFragment();
+                    return placeholderFragment;
+                case 1:
+                    EnviarPaquetepago enviarPaquetepago = new EnviarPaquetepago();
+                    return enviarPaquetepago;
+            }
+            return null;
         }
 
         @Override
         public int getCount() {
             // Show 3 total pages.
-            return 3;
+            return 2;
         }
 
         @Override
@@ -137,3 +156,4 @@ public class EnviarPaquete extends AppCompatActivity implements OnMapReadyCallba
         }
     }
 }
+

@@ -26,14 +26,14 @@
         android:layout_marginTop="20dp"/>
 
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/siguiente"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
         android:text="Siguiente"
-        android:layout_alignParentBottom="true"
         android:layout_marginLeft="230dp"
-        />
+        android:layout_below="@+id/button5"
+        android:layout_alignEnd="@+id/button5" />
 
     <ImageSwitcher
         android:layout_width="120dp"

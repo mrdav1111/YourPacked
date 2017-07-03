@@ -1,13 +1,22 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.angel.yourpacket.EnviarPaquetepago">
 
     <!-- TODO: Update blank fragment layout -->
+    <Button
+        android:id="@+id/pagar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Pagar"
+        android:textSize="30sp"
+        android:onClick="Paga"/>
     <TextView
+        android:id="@+id/response"
+        android:textSize="30sp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+         />
 
-</FrameLayout>
+</LinearLayout>
