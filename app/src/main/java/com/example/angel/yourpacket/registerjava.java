@@ -45,51 +45,30 @@ public class registerjava extends android.support.v4.app.Fragment {
 
         mAuth = FirebaseAuth.getInstance();
 
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    // User is signed in
-                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
-
-                } else {
-                    // User is signed out
-                    Log.d(TAG, "onAuthStateChanged:signed_out");
-                }
-                // ...
-            }
-        };
 
         registrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (contra.getText().toString().equals(contra2.getText().toString())){
 
-                    mAuth.createUserWithEmailAndPassword(email.getText().toString(), contra.getText().toString()).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-                        @Override
-                        public void onSuccess(AuthResult authResult) {
+                String sEmail,sContra1,sContra2;
 
-                            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                            Usuario usuario = new Usuario(user.getEmail(),2);
+                sEmail = email.getText().toString();
+                sContra1 = contra.getText().toString();
+                sContra2 = contra2.getText().toString();
 
-                            DatabaseReference usuarioReference = FirebaseDatabase
-                                    .getInstance()
-                                    .getReference()
-                                    .child("Usuarios")
-                                    .child(user.getUid()).child("info");
-
-                            usuarioReference.setValue(usuario);
-
+                if (sEmail.length() != 0){
+                    if (sContra1.length() != 0){
+                        if (sContra2.length() != 0){
+                            registrar(sEmail,sContra1,sContra2);
+                        } else {
+                            Toast.makeText(getActivity(),"Rellenar campo: Confirmar contraseña",Toast.LENGTH_SHORT);
                         }
-                    });
+                    }else {
 
-
-
-
-
+                        Toast.makeText(getActivity(),"Rellenar campo: Contraseña",Toast.LENGTH_SHORT);
+                    }
                 } else {
-                    Toast.makeText(getContext(),"La contraseñas no coinciden",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(),"Rellenar campo: Email",Toast.LENGTH_SHORT);
                 }
             }
         });
@@ -97,19 +76,32 @@ public class registerjava extends android.support.v4.app.Fragment {
         return rootView;
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        mAuth.addAuthStateListener(mAuthListener);
-    }
+    public void registrar (String email, String contra1, String contra2){
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (mAuthListener != null) {
-            mAuth.removeAuthStateListener(mAuthListener);
+        if (contra1.equals(contra2)){
+
+            mAuth.createUserWithEmailAndPassword(email, contra1).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                @Override
+                public void onSuccess(AuthResult authResult) {
+
+                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                    Usuario usuario = new Usuario(user.getEmail(),1);
+
+                    DatabaseReference usuarioReference = FirebaseDatabase
+                            .getInstance()
+                            .getReference()
+                            .child("Usuarios")
+                            .child(user.getUid()).child("info");
+
+                    usuarioReference.setValue(usuario);
+
+                }
+            });
+
+
+        } else {
+            Toast.makeText(getContext(),"La contraseñas no coinciden",Toast.LENGTH_SHORT).show();
         }
     }
-
 
 }

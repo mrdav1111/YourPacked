@@ -102,8 +102,8 @@ public class ListaPaquetes extends Fragment {
 
 
         for (Paquete p : paquetes){
-            bd.child(p.getNoGuia()).setValue(true);
-            bd.getParent().getParent().getParent().child("Paquetes").child(p.getNoGuia()).setValue(p);
+            //bd.child(p.getNoGuia()).setValue(true);
+            //bd.getParent().getParent().getParent().child("Paquetes").child(p.getNoGuia()).setValue(p);
         }
 
         bd.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -142,12 +142,12 @@ public class ListaPaquetes extends Fragment {
         bd.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Toast.makeText(getContext(),"Child added",Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(),"Child added",Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                Toast.makeText(getContext(),dataSnapshot.getKey()+"1",Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(),dataSnapshot.getKey()+"1",Toast.LENGTH_SHORT).show();
                 DatabaseReference paqueteDatabaseReference = FirebaseDatabase.getInstance().getReference().child("Paquetes").child(dataSnapshot.getKey());
 
                 if ((Boolean) dataSnapshot.getValue()){

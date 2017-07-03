@@ -24,6 +24,11 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class Login extends AppCompatActivity  {
 
@@ -41,6 +46,9 @@ public class Login extends AppCompatActivity  {
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
+    private int loginType;
 
 
     @Override
@@ -60,6 +68,53 @@ public class Login extends AppCompatActivity  {
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
+
+        mAuth = FirebaseAuth.getInstance();
+
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null){
+
+
+                    DatabaseReference usuarioReference = FirebaseDatabase
+                            .getInstance()
+                            .getReference()
+                            .child("Usuarios")
+                            .child(user.getUid()).child("info");
+
+                    usuarioReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            Usuario usuario = (Usuario) dataSnapshot.getValue(Usuario.class);
+                            loginType = usuario.getTipo();
+                            finish();
+
+                            if (loginType == 2){
+                                Intent mensajero = new Intent(Login.this, Mensajero.class);
+                                startActivity(mensajero);
+                            } else {
+
+                                Intent main = new Intent(Login.this, Main2Activity.class);
+                                startActivity(main);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+
+
+                } else {
+
+                }
+
+            }
+        };
 
     }
 
@@ -130,5 +185,17 @@ public class Login extends AppCompatActivity  {
             }
             return null;
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mAuth.addAuthStateListener(mAuthListener);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mAuth.removeAuthStateListener(mAuthListener);
     }
 }

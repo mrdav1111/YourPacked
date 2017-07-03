@@ -113,7 +113,7 @@ public class ListaPaquetesMensajero extends Fragment {
         getActivity().setTitle("YourPacked");
 
         DatabaseReference db = FirebaseDatabase.getInstance().getReference();
-        db.child("Paquetes").child(paqueteUbicado.getNoGuia()).setValue(paqueteUbicado);
+        //db.child("Paquetes").child(paqueteUbicado.getNoGuia()).setValue(paqueteUbicado);
 
         final ListView paquete = (ListView) v.findViewById(R.id.listaPaquetes);
 
@@ -128,7 +128,7 @@ public class ListaPaquetesMensajero extends Fragment {
 
         for (Paquete p : paquetes) {
             bd.child(p.getNoGuia()).setValue(true);
-            bd.getParent().getParent().getParent().child("Paquetes").child(p.getNoGuia()).setValue(p);
+            //bd.getParent().getParent().getParent().child("Paquetes").child(p.getNoGuia()).setValue(p);
         }
 
         bd.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -218,12 +218,12 @@ public class ListaPaquetesMensajero extends Fragment {
         bd.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Toast.makeText(getContext(),"Child added",Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(),"Child added",Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                Toast.makeText(getContext(),dataSnapshot.getKey()+"1",Toast.LENGTH_SHORT).show();
+
                 DatabaseReference paqueteDatabaseReference = FirebaseDatabase.getInstance().getReference().child("Paquetes").child(dataSnapshot.getKey());
 
                 if ((Boolean) dataSnapshot.getValue()){
