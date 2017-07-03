@@ -4,7 +4,12 @@ package com.example.angel.yourpacket;
  * Created by angel on 1/7/2017.
  */
 
+import android.*;
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -87,7 +92,6 @@ public class PlaceholderFragment extends Fragment implements OnMapReadyCallback 
         imageSwitcher.setOutAnimation(out);
 
 
-
         button5 = (Button) rootView.findViewById(R.id.button5);
         button5.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,8 +99,7 @@ public class PlaceholderFragment extends Fragment implements OnMapReadyCallback 
                 if (i < images.length - 1) {
                     i++;
                     imageSwitcher.setImageResource(images[i]);
-                }
-                else {
+                } else {
                     i = 0;
                     imageSwitcher.setImageResource(images[i]);
                 }
@@ -106,12 +109,10 @@ public class PlaceholderFragment extends Fragment implements OnMapReadyCallback 
             textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));*/
 
 
-
-                }
-            });
+            }
+        });
         return rootView;
-        }
-
+    }
 
 
     @Override
@@ -136,11 +137,32 @@ public class PlaceholderFragment extends Fragment implements OnMapReadyCallback 
     @Override
     public void onMapReady(final GoogleMap googleMap) {
 
-        LatLng center = googleMap.getCameraPosition().target;
+
+
+
+
+        if (ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+
+
+
+        } else {
+            ActivityCompat.requestPermissions(getActivity(),new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION},1);
+        }
+        googleMap.setMyLocationEnabled(true);
+        LatLng center = new LatLng(18.475742, -69.926144);
+
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(center,10));
 
         markerOptions = new MarkerOptions()
-                .title("Prueba")
-                .snippet("Ubicacion actual de tu paquete")
+                .title("Direccion")
+                .snippet("Ubicacion para enviar paquete")
                 .position(center);
         final Marker m = googleMap.addMarker(markerOptions);
 
