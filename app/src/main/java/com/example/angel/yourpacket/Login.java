@@ -1,7 +1,9 @@
 package com.example.angel.yourpacket;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -19,6 +21,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,7 +33,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class Login extends AppCompatActivity  {
+import org.w3c.dom.Text;
+
+public class Login extends AppCompatActivity implements SerMensajero.OnFragmentInteractionListener {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -50,6 +55,7 @@ public class Login extends AppCompatActivity  {
     private FirebaseAuth.AuthStateListener mAuthListener;
     private int loginType;
 
+    private TextView texto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -141,6 +147,11 @@ public class Login extends AppCompatActivity  {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
+    }
+
 
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
@@ -161,6 +172,10 @@ public class Login extends AppCompatActivity  {
                 case 1 :{
                     registerjava tab2 = new registerjava();
                     return tab2;}
+                case 2 :{
+                    SerMensajero tab3 = new SerMensajero();
+                    return tab3;
+                }
                 default :{
                     return null;}
             }
@@ -171,7 +186,7 @@ public class Login extends AppCompatActivity  {
         @Override
         public int getCount() {
             // Show 3 total pages.
-            return 2;
+            return 3;
         }
 
         @Override
@@ -181,6 +196,8 @@ public class Login extends AppCompatActivity  {
                     return "Iniciar Sesion";
                 case 1:
                     return "Registrarse";
+                case 2:
+                    return "¿Desea ser Mensajero?";
 
             }
             return null;
