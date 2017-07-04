@@ -121,8 +121,8 @@ public class EnviarPaquetepago extends Fragment {
 
             @Override
             public void onClick(View v) {
-                thingToBuy = new PayPalPayment(new BigDecimal("50"), "USD",
-                        "pelicula", PayPalPayment.PAYMENT_INTENT_SALE);
+                thingToBuy = new PayPalPayment(new BigDecimal("200"), "USD",
+                        "paquete", PayPalPayment.PAYMENT_INTENT_SALE);
                 Intent intent = new Intent(getActivity(),
                         PaymentActivity.class);
 
