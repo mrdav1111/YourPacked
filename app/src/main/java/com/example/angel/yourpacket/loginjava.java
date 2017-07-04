@@ -58,11 +58,13 @@ public class loginjava extends android.support.v4.app.Fragment {
                 String emailt = email.getText().toString();
                 String contrat = contra.getText().toString();
 
+
+
                if (emailt.length()!= 0){
 
                    if (contrat.length()!= 0){
 
-                       Toast.makeText(getActivity(),"Iniciando sesion",Toast.LENGTH_SHORT);
+                       Toast.makeText(getActivity(),"Iniciando sesion",Toast.LENGTH_SHORT).show();
                        mAuth.signInWithEmailAndPassword(emailt, contrat).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                        @Override
                        public void onComplete(@NonNull Task<AuthResult> task) {
@@ -105,7 +107,7 @@ public class loginjava extends android.support.v4.app.Fragment {
                    }
                } else {
                    if (contrat.length() == 0){
-                       Toast.makeText(getActivity(),"Llenar todos loc campos",Toast.LENGTH_SHORT);
+                       Toast.makeText(getActivity(),"Llenar todos los campos",Toast.LENGTH_SHORT).show();
                    }
                }
 

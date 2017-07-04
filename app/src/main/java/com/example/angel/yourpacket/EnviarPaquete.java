@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -29,6 +30,8 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.ArrayList;
 
 public class EnviarPaquete extends AppCompatActivity implements OnMapReadyCallback, EnviarPaquetepago.OnFragmentInteractionListener {
 
@@ -46,6 +49,7 @@ public class EnviarPaquete extends AppCompatActivity implements OnMapReadyCallba
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
+    private PlaceholderFragment placeholderFragment;
 
 
     @Override
@@ -63,6 +67,13 @@ public class EnviarPaquete extends AppCompatActivity implements OnMapReadyCallba
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
+       /* mViewPager.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return true;
+            }
+        });*/
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -73,6 +84,10 @@ public class EnviarPaquete extends AppCompatActivity implements OnMapReadyCallba
             }
         });
 
+    }
+
+    public PlaceholderFragment getPlaceholder(){
+        return placeholderFragment;
     }
 
 
@@ -125,7 +140,11 @@ public class EnviarPaquete extends AppCompatActivity implements OnMapReadyCallba
             // Return a PlaceholderFragment (defined as a static inner class below).
             switch (position){
                 case 0:
-                    PlaceholderFragment placeholderFragment = new PlaceholderFragment();
+                    Bundle parametros = new Bundle();
+                    /*ViewPager[] vp = new ViewPager[]{mViewPager};
+                    parametros.putSerializable("vp",vp);*/
+                    placeholderFragment = new PlaceholderFragment();
+                    //placeholderFragment.setArguments(parametros);
                     return placeholderFragment;
                 case 1:
                     EnviarPaquetepago enviarPaquetepago = new EnviarPaquetepago();

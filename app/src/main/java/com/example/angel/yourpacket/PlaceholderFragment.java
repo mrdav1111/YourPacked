@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,10 +49,16 @@ public class PlaceholderFragment extends Fragment implements OnMapReadyCallback 
     MapView map;
     GoogleMap mapa;
     MarkerOptions markerOptions;
+
+
+
+
     private static final String ARG_SECTION_NUMBER = "section_number";
+    private Marker m;
 
     public PlaceholderFragment() {
     }
+
 
     /**
      * Returns a new instance of this fragment for the given section
@@ -73,6 +80,8 @@ public class PlaceholderFragment extends Fragment implements OnMapReadyCallback 
 
         map.onCreate(savedInstanceState);
         map.getMapAsync(this);
+
+
 
 
         imageSwitcher = (ImageSwitcher) rootView.findViewById(R.id.imageSwitcher);
@@ -114,17 +123,22 @@ public class PlaceholderFragment extends Fragment implements OnMapReadyCallback 
             }
         });
 
-                }
-            });
         Button button4 = (Button) rootView.findViewById(R.id.siguiente);
-        button4.setOnClickListener(new View.OnClickListener() {
+        /*button4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
+
+            mViewPager.setCurrentItem(1);
+
             }
-        });
+        });*/
+
+
         return rootView;
     }
+
+
 
 
     @Override
@@ -143,6 +157,10 @@ public class PlaceholderFragment extends Fragment implements OnMapReadyCallback 
     public void onDestroy() {
         super.onDestroy();
         map.onDestroy();
+    }
+
+    public Marker getMarker(){
+        return m;
     }
 
 
@@ -176,7 +194,9 @@ public class PlaceholderFragment extends Fragment implements OnMapReadyCallback 
                 .title("Direccion")
                 .snippet("Ubicacion para enviar paquete")
                 .position(center);
-        final Marker m = googleMap.addMarker(markerOptions);
+        m = googleMap.addMarker(markerOptions);
+
+
 
 
         googleMap.setOnCameraMoveListener(new GoogleMap.OnCameraMoveListener() {

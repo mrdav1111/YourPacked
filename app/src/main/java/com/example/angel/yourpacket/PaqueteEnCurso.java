@@ -14,13 +14,27 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
-public class PaqueteEnCurso extends AppCompatActivity {
+
+public class PaqueteEnCurso extends AppCompatActivity implements OnMapReadyCallback {
 
     private LocationManager locationManager;
     private LocationListener locationListener;
+
+    MapView mapView;
+    GoogleMap map;
+    private DatabaseReference paqueteEnCursoBD;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +47,10 @@ public class PaqueteEnCurso extends AppCompatActivity {
 
         guia.setText(paquete.getNoGuia());
 
-        final DatabaseReference paqueteEnCursoBD = FirebaseDatabase.getInstance().getReference().child("Paquetes").child(paquete.getNoGuia());
+        mapView = (MapView) findViewById(R.id.mapView2);
+        mapView.onCreate(savedInstanceState);
+
+        paqueteEnCursoBD = FirebaseDatabase.getInstance().getReference().child("Paquetes").child(paquete.getNoGuia());
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
@@ -83,6 +100,27 @@ public class PaqueteEnCurso extends AppCompatActivity {
 
         }
 
+        mapView.getMapAsync(this);
+    }
+
+    @Override
+    protected void onResume() {
+        mapView.onResume();
+        super.onResume();
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        mapView.onDestroy();
+        super.onDestroy();
+
+    }
+
+    @Override
+    protected void onPause() {
+        mapView.onPause();
+        super.onPause();
 
     }
 
@@ -96,5 +134,39 @@ public class PaqueteEnCurso extends AppCompatActivity {
                 return;
 
         }
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        map = googleMap;
+        googleMap.setMyLocationEnabled(true);
+
+        paqueteEnCursoBD.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                Paquete paquete = dataSnapshot.getValue(Paquete.class);
+                LatLng destino = new LatLng(paquete.getDestino().get(0),paquete.getDestino().get(1));
+                LatLng ubicacion = new LatLng(paquete.getUbicacion().get(0),paquete.getUbicacion().get(1));
+
+                map.moveCamera(CameraUpdateFactory.newLatLngZoom(destino, 15));
+
+                map.addMarker(new MarkerOptions().title("Destino").snippet("Direccion de envio")
+                .position(destino));
+
+                map.addMarker(new MarkerOptions().title("Ubicacion").snippet("Direccion de recogida")
+                        .position(ubicacion));
+
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
     }
 }

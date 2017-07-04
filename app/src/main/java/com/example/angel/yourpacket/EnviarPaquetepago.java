@@ -4,6 +4,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import java.math.BigDecimal;
+
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -14,6 +18,15 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.paypal.android.sdk.payments.PayPalConfiguration;
 import com.paypal.android.sdk.payments.PayPalPayment;
 import com.paypal.android.sdk.payments.PayPalService;
@@ -71,14 +84,15 @@ public class EnviarPaquetepago extends Fragment {
 
 
     private OnFragmentInteractionListener mListener;
-
-
+    private Paquete paquete;
 
 
     public EnviarPaquetepago() {
 
         // Required empty public constructor
     }
+
+    final String[] ultGuia = new String[1];
 
     /**
      * Use this factory method to create a new instance of
@@ -132,6 +146,8 @@ public class EnviarPaquetepago extends Fragment {
             }
         });
 
+
+
         return view;
     }
 
@@ -159,7 +175,72 @@ public class EnviarPaquetepago extends Fragment {
             System.out.println("El usuario canceló el pago");
         }
 
+        obtenerUltimoPaquete();
+
         }
+
+
+    public void registrarPaquete(){
+
+
+        int guia = Integer.parseInt(ultGuia[0].substring(2));
+        String nextGuia = "YP" +String.format("%5s",guia+1).replace(' ','0');
+        paquete = new Paquete(nextGuia);
+        Location ubicacion = obtenerUbicacion();
+        paquete.setUbicacion(ubicacion.getLatitude(),ubicacion.getLongitude());
+        EnviarPaquete Actividad = (EnviarPaquete)getActivity();
+        PlaceholderFragment fragment1 = Actividad.getPlaceholder();
+        Marker marker = fragment1.getMarker();
+        paquete.setDestino(marker.getPosition().latitude,marker.getPosition().longitude);
+
+        DatabaseReference Paquetes = FirebaseDatabase.getInstance().getReference();
+        Paquetes.child("Paquetes").child(paquete.getNoGuia()).setValue(paquete);
+        Paquetes.child("Usuarios").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("paquetes").child(paquete.getNoGuia()).setValue(true);
+        Paquetes.child("Usuarios").child("WPmhJUKcaFS4dgjokVju2AIS7O43").child("paquetes").child(paquete.getNoGuia()).setValue(true);
+
+
+
+
+
+    }
+
+    public Location obtenerUbicacion(){
+
+         Location ubicacion;
+
+        LocationManager locat = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        ubicacion = locat.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+        return ubicacion;
+
+
+
+    }
+
+    public void obtenerUltimoPaquete(){
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Paquetes");
+        Query paquetes = databaseReference.orderByKey().limitToLast(1);
+
+
+
+        paquetes.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                for (DataSnapshot child: dataSnapshot.getChildren()){
+                    ultGuia[0] = child.getKey();
+                }
+
+                registrarPaquete();
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
 
 
 

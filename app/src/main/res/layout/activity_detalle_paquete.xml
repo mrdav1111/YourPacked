@@ -72,15 +72,15 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
-            android:text="Hora de salida"
+            android:text="Hora de solicitud"
             android:id="@+id/horaSalidaTag"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/horaSalidaTag"
-            android:layout_alignLeft="@id/horaSalidaTag"
             android:id="@+id/horaSalida"
-            android:text="12:15 PM"/>
+            android:text="12:15 PM"
+            android:layout_below="@+id/horaSalidaTag"
+            android:layout_alignParentEnd="true" />
     </RelativeLayout>
 
     <com.google.android.gms.maps.MapView

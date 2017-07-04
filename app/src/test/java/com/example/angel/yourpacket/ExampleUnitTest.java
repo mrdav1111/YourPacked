@@ -1,5 +1,9 @@
 package com.example.angel.yourpacket;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -13,6 +17,12 @@ public class ExampleUnitTest {
     @Test
     public void addition_isCorrect() throws Exception {
         assertEquals(4, 2 + 2);
+    }
+
+    @Test
+    public void registrar() throws Exception {
+
+        String.format("%-5s",5);
     }
 
     @Test

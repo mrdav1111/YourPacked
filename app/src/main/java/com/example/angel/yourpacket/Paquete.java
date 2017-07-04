@@ -25,6 +25,8 @@ public class Paquete implements Parcelable {
     String fecha;
     Double lat = new Double(0);
     Double lng = new Double(0);
+    Double latDest = new Double(0);
+    Double lngDest = new Double(0);
 
     public ArrayList<Double>  getUbicacion() {
         ArrayList<Double> ubicacion = new ArrayList<>();
@@ -35,17 +37,35 @@ public class Paquete implements Parcelable {
 
     }
 
+    public ArrayList<Double> getDestino(){
+        ArrayList<Double> destino = new ArrayList<>();
+        destino.add(latDest);
+        destino.add(lngDest);
+
+        return destino;
+    }
+
     public void setUbicacion(double v, double v1) {
         this.lat = v;
         this.lng = v1;
     }
+
+    public void setDestino(double v, double v1) {
+        this.latDest = v;
+        this.lngDest = v1;
+    }
+
+
 
     public Paquete(){}
 
     public Paquete(String noGuia) {
         this.noGuia = noGuia;
         estado.add("Solicitud recibida");
-        //fecha = Calendar.getInstance().getTime();
+        Calendar calendar = Calendar.getInstance();
+        java.text.SimpleDateFormat format = new java.text.SimpleDateFormat("dd/MM h:mm a");
+
+        fecha = format.format(calendar.getTime());
 
     }
 
@@ -62,7 +82,7 @@ public class Paquete implements Parcelable {
     }
 
     public String getFecha() {
-        return "hoy";
+        return fecha;
     }
 
     public static final Parcelable.Creator<Paquete> CREATOR = new Creator<Paquete>() {
@@ -88,14 +108,14 @@ public class Paquete implements Parcelable {
         dest.writeSerializable(estado);
        // dest.writeDouble(lat);
         //dest.writeDouble(lng);
-        //dest.writeSerializable(fecha);
+        dest.writeString(fecha);
 
     }
 
     public Paquete(Parcel in){
         this.noGuia = in.readString();
         this.estado = (ArrayList<String>) in.readSerializable();
-        //this.fecha = (Date) in.readSerializable();
+        this.fecha = in.readString();
     }
 
     @Override

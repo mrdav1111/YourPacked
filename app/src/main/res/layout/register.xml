@@ -20,7 +20,7 @@
         android:layout_height="40dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="15dp"
-        android:drawableLeft="@drawable/user"
+        android:drawableLeft="@drawable/email"
         android:ems="10"
         android:hint="Email" />
 
@@ -41,7 +41,8 @@
         android:layout_height="40dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="105dp"
-        android:drawableLeft="@drawable/email"
+        android:drawableLeft="@drawable/pass"
+        android:inputType="textPassword"
         android:ems="10"
         android:hint="Confirmar contraseña" />
 
